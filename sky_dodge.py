@@ -27,15 +27,25 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.surf.get_rect()
 
         #Move the sprite based on user keypresses
-     def update(self, pressed_keys):
+    def update(self, pressed_keys):
         if pressed_keys[K_UP]:
-           self.rect.move_ip(0, -5) 
+           self.rect.move_ip(0, -5)
         if pressed_keys[K_DOWN]:
-           self.rect.move_ip(0, 5) 
+           self.rect.move_ip(0, 5)
         if pressed_keys[K_LEFT]:
-           self.rect.move_ip(-5, 0) 
+           self.rect.move_ip(-5, 0)
         if pressed_keys[K_RIGHT]:
-           self.rect.move_ip(5, 0) 
+           self.rect.move_ip(5, 0)
+
+        #Keep player on screen
+        if self.rect.left < 0:
+            self.rect.left = 0
+        if self.rect.right > SCREEN_WIDTH:
+            self.rect.right = SCREEN_WIDTH
+        if self.rect.top <= 0:
+            self.rect.top = 0
+        if self.rect.bottom >= SCREEN_HEIGHT:
+            self.rect.bottom = SCREEN_HEIGHT 
 
 # Initialize pygame
 pygame.init()
@@ -64,6 +74,8 @@ while running:
 
     pressed_keys = pygame.key.get_pressed()
 
+    # Update player sprite based on key presses
+    player.update(pressed_keys)
     #Fill the screen with white
     screen.fill((0, 0, 0))
 
